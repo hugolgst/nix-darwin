@@ -6,6 +6,7 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
+    # Programming
     vim
     git
     neofetch
@@ -14,7 +15,10 @@
     nixpkgs-review
     coreutils
     gnupg
+
+    # Desktop apps
     iTerm2
+    figma
   ];
 
   nixpkgs = {

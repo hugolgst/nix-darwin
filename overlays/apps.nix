@@ -36,4 +36,18 @@ self: super: {
       "iTerm2 is a replacement for Terminal and the successor to iTerm";
     homepage = "https://www.iterm2.com";
   };
+
+  figma = self.installApplication rec {
+    name = "Figma";
+    appname = "Figma";
+    version = "1.0.0";
+    sourceRoot = "Figma.app";
+    src = super.fetchurl {
+      url = "https://desktop.figma.com/mac/Figma.zip";
+      sha256 =
+        "4268226a7c3651039e013d11360d21e04364379fe9e4c8137558422c8d2182c1";
+    };
+    description = "Figma is a vector graphics editor and prototyping tool.";
+    homepage = "https://figma.com";
+  };
 }
