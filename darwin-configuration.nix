@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+  imports = [ ./modules/pam.nix ];
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
@@ -11,6 +13,7 @@
     nixfmt
     nixpkgs-review
     coreutils
+    gnupg
     iTerm2
   ];
 
@@ -36,7 +39,8 @@
   programs.fish.enable = true;
   environment.shells = with pkgs; [ fish ];
 
-  users.users.hugolageneste = { shell = pkgs.fish; };
+  # Enable sudo login with Touch ID
+  security.pam.enableSudoTouchIdAuth = true;
 
   # MacOS system defaults
   system.defaults = { finder.AppleShowAllExtensions = true; };

@@ -28,7 +28,8 @@ self: super: {
     sourceRoot = "iTerm.app";
     src = super.fetchurl {
       url = "https://iterm2.com/downloads/stable/iTerm2-${version}.zip";
-      sha256 = "cdf6dce864e53f60445f012cf6e4fb8113ed0ae28532921a0dec835565eb4b13";
+      sha256 =
+        "cdf6dce864e53f60445f012cf6e4fb8113ed0ae28532921a0dec835565eb4b13";
       # date = 2019-10-09T08:28:05-0700;
     };
     description =
