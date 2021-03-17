@@ -23,7 +23,7 @@
 
   nixpkgs = {
     config = {
-      allowUnsupportedSystem = true;
+      allowUnsupportedSystem = false;
       allowUnfree = true;
     };
 
@@ -48,6 +48,9 @@
 
   # MacOS system defaults
   system.defaults = { finder.AppleShowAllExtensions = true; };
+
+  # Set the default shell for hugolageneste
+  users.users.hugolageneste.shell = pkgs.fish;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
