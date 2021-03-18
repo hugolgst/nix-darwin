@@ -1,13 +1,16 @@
 { config, pkgs, lib, ... }:
 
+let 
+  username = "hugolageneste";
+  home = "/Users/${username}";
+in
 {
-  imports = [ ./modules/pam.nix ];
+  imports = [ <home-manager/nix-darwin> ./modules/pam.nix ];
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     # Programming
-    vim
     git
     neofetch
     vscode
@@ -15,6 +18,7 @@
     nixpkgs-review
     coreutils
     gnupg
+    nodejs
 
     # Desktop apps
     iTerm2
@@ -49,8 +53,20 @@
   # MacOS system defaults
   system.defaults = { finder.AppleShowAllExtensions = true; };
 
-  # Set the default shell for hugolageneste
-  users.users.hugolageneste.shell = pkgs.fish;
+  # Set the default shell for user
+  users.users."${username}" = {
+    inherit home;
+    shell = pkgs.fish;
+  };
+
+  # The home-manager configuration for the user
+  home-manager.useUserPackages = true;
+  home-manager.users."${username}" = import ./home;
+
+  system.activationScripts.postActivation.text = ''
+    # Set the default shell as fish for the user
+    sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
+  '';
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
