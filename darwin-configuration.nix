@@ -68,6 +68,10 @@ in
     sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
   '';
 
+  programs.fish.shellAliases = {
+    ss = "open -b com.apple.ScreenSaver.Engine";
+  };
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
