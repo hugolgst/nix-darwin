@@ -2,7 +2,7 @@
   description = "hugolgst/nix-darwin";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -11,12 +11,14 @@
   let
     hostname = "Hugo-Work-Macbook-Pro";
     username = "hugolageneste";
-    configuration = { pkgs, ... }: {
+
+    configuration = { pkgs, lib, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [ 
         git
         neofetch
+        pfetch-rs
         vscode
         nixfmt
         nixpkgs-review
@@ -27,6 +29,7 @@
         neovim
         vimPlugins.LazyVim
         oh-my-fish
+        jq
       ];
 
       nixpkgs = {
@@ -38,17 +41,30 @@
       services.nix-daemon.enable = true;
 
       # Set fish as default shell
-      programs.fish.enable = true;
-      users.users."${username}" = {
-        inherit home;
-        shell = pkgs.fish;
+      programs.fish = {
+        enable = true;
+        shellAliases = let 
+          flakePath = "~/.config/nix-darwin";
+        in
+        {
+          nce = "nvim ${flakePath}/flake.nix";
+          ncu = "nix flake update ${flakePath}; darwin-rebuild switch --flake ${flakePath}";
+          ncp = "cd ${flakePath}; git add -A; git commit -m \"Update nixpkgs to \$(jq -r '.nodes.nixpkgs.locked.rev' ${flakePath}/flake.lock)\"; git push";
+          ss = "open -b com.apple.ScreenSaver.Engine";
+        };
+        shellInit = ''
+          pfetch
+        '';
       };
-      programs.fish.shellAliases = {
-        ss = "open -b com.apple.ScreenSaver.Engine";
+      users.users."${username}" = {
+        shell = pkgs.fish;
       };
       system.activationScripts.postActivation.text = ''
         # Set the default shell as fish for the user
         sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
+        #${lib.getBin pkgs.oh-my-fish}/bin/omf-install
+        #${lib.getBin pkgs.oh-my-fish}/bin/omf install agnoster
+        #${lib.getBin pkgs.oh-my-fish}/bin/omf theme agnoster
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;
