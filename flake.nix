@@ -11,6 +11,7 @@
   let
     hostname = "Hugo-Work-Macbook-Pro";
     username = "hugolageneste";
+    flakePath = "~/.config/nix-darwin";
 
     configuration = { pkgs, lib, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -43,16 +44,14 @@
       # Set fish as default shell
       programs.fish = {
         enable = true;
-        shellAliases = let 
-          flakePath = "~/.config/nix-darwin";
-        in
-        {
+        shellAliases = {
           nce = "nvim ${flakePath}/flake.nix";
           ncu = "nix flake update ${flakePath}; darwin-rebuild switch --flake ${flakePath}";
           ncp = "cd ${flakePath}; git add -A; git commit -m \"Update nixpkgs to \$(jq -r '.nodes.nixpkgs.locked.rev' ${flakePath}/flake.lock)\"; git push";
           ss = "open -b com.apple.ScreenSaver.Engine";
         };
-        shellInit = ''
+
+        loginShellInit = ''
           pfetch
         '';
       };
@@ -62,9 +61,9 @@
       system.activationScripts.postActivation.text = ''
         # Set the default shell as fish for the user
         sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
-        #${lib.getBin pkgs.oh-my-fish}/bin/omf-install
-        #${lib.getBin pkgs.oh-my-fish}/bin/omf install agnoster
-        #${lib.getBin pkgs.oh-my-fish}/bin/omf theme agnoster
+
+        rm -r /Users/${username}/.local/share/omf
+        su ${username} -c 'sudo ${lib.getBin pkgs.oh-my-fish}/bin/omf-install' # Dirty but didnt found another way
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;
