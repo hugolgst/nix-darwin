@@ -11,7 +11,7 @@
   let
     hostname = "Hugo-Work-Macbook-Pro";
     username = "hugolageneste";
-    flakePath = "~/.config/nix-darwin";
+    flakePath = "/Users/${username}/.config/nix-darwin";
 
     configuration = { pkgs, lib, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -64,6 +64,7 @@
 
         rm -r /Users/${username}/.local/share/omf
         su ${username} -c 'sudo ${lib.getBin pkgs.oh-my-fish}/bin/omf-install' # Dirty but didnt found another way
+        cp ${flakePath}/hugolgst-iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;
