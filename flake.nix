@@ -64,7 +64,7 @@
 
         rm -r /Users/${username}/.local/share/omf
         su ${username} -c 'sudo ${lib.getBin pkgs.oh-my-fish}/bin/omf-install' # Dirty but didnt found another way
-        cp ${flakePath}/hugolgst-iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
+        cp ${flakePath}/iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;
