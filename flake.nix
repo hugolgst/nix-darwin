@@ -5,9 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   let
     hostname = "Hugo-Work-Macbook-Pro";
     username = "hugolageneste";
@@ -27,10 +29,9 @@
         gnupg
         nodejs  
         iterm2
-        neovim
-        vimPlugins.LazyVim
         oh-my-fish
         jq
+        nerdfonts
       ];
 
       nixpkgs = {
@@ -64,7 +65,7 @@
 
         rm -r /Users/${username}/.local/share/omf
         su ${username} -c 'sudo ${lib.getBin pkgs.oh-my-fish}/bin/omf-install' # Dirty but didnt found another way
-        cp ${flakePath}/iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
+        cp ${flakePath}/config/iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;
@@ -86,7 +87,15 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#
     darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [ 
+        configuration 
+        home-manager.darwinModules.home-manager 
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.${username} = import ./home;
+        }
+      ];
     };
 
     # Expose the package set, including overlays, for convenience.
