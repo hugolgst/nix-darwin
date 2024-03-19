@@ -13,25 +13,33 @@
   let
     hostname = "Hugo-Work-Macbook-Pro";
     username = "hugolageneste";
-    flakePath = "/Users/${username}/.config/nix-darwin";
+    home = "/Users/${username}";
+    flakePath = "${home}/.config/nix-darwin";
 
     configuration = { pkgs, lib, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [ 
+        # Utils
         git
-        neofetch
-        pfetch-rs
-        vscode
-        nixfmt
-        nixpkgs-review
         coreutils
         gnupg
-        nodejs  
-        iterm2
-        oh-my-fish
         jq
         nerdfonts
+        
+        # Gadgets
+        neofetch
+        pfetch-rs
+
+        vscode
+        iterm2
+        oh-my-fish
+
+        # Nix stuff
+        nixfmt
+        nixpkgs-review
+
+        nodejs  
       ];
 
       nixpkgs = {
@@ -58,14 +66,20 @@
       };
       users.users."${username}" = {
         shell = pkgs.fish;
+        inherit home;
       };
       system.activationScripts.postActivation.text = ''
         # Set the default shell as fish for the user
         sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
 
-        rm -r /Users/${username}/.local/share/omf
+        rm -r ${home}/.local/share/omf
         su ${username} -c 'sudo ${lib.getBin pkgs.oh-my-fish}/bin/omf-install' # Dirty but didnt found another way
-        cp ${flakePath}/config/iterm2.json /Users/${username}/Library/Application\ Support/iTerm2/DynamicProfiles/
+
+        sourcePath="${flakePath}/config/iterm2.json"
+        destinationPath="${home}/Library/Application Support/iTerm2/DynamicProfiles/iterm2.json"
+        if [ ! -f "$destinationPath" ]; then
+            cp "$sourcePath" "$destinationPath"
+        fi
       '';
       # Enable sudo login with Touch ID
       security.pam.enableSudoTouchIdAuth = true;

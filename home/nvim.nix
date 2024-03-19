@@ -1,11 +1,15 @@
 { pkgs, ... }: {
   programs.neovim = {
     enable = true;
-    # Specify your Neovim plugins here
-    plugins = with pkgs; [
-      vimPlugins.LazyVim
-      # Add more plugins as needed
+
+    #viAlias = true;
+    #vimAlias = true;
+
+    plugins = with pkgs.vimPlugins; [
+      LazyVim
+      #catppuccin-nvim
+      #gruvbox-nvim
     ];
-    # You can also set Neovim configurations here, such as custom settings or key mappings
+
   };
 }
