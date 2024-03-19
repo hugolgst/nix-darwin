@@ -1,6 +1,6 @@
 { pkgs, ... }: 
 {
-  imports = [ ./home/nvim.nix ];
+  imports = [ ./nvim.nix ];
   
   home.stateVersion = "24.05";
 }
