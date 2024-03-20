@@ -1,5 +1,5 @@
 -- https://github.com/LazyVim/starter
---
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
@@ -8,32 +8,42 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+vim.opt.number = true
+vim.opt.relativenumber = false
+
 require("lazy").setup({
 	spec = {
 		-- add LazyVim and import its plugins
-		{ 
-      "LazyVim/LazyVim", 
-      import = "lazyvim.plugins",
-      opts = {
-        "colorscheme" = "catppuccin-macchiato",
-      },
-    },
+		{
+			"LazyVim/LazyVim",
+			import = "lazyvim.plugins",
+			opts = {
+				colorscheme = "catppuccin-macchiato",
+			},
+		},
 		-- Extras
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
 		{ import = "lazyvim.plugins.extras.lang.json" },
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
 		-- import/override with your plugins
-    { "catppuccin/nvim" },
-    {
-      "nvim-neo-tree/neo-tree.nvim",
-      opts = {
-        window = {
-          position = "right",
-        },
-      },
-    },
+		-- { "catppuccin/nvim" },
+		{
+			"nvim-neo-tree/neo-tree.nvim",
+			opts = {
+				window = {
+					position = "right",
+				},
+			},
+		},
 
-    { "rcarriga/nvim-notify", enabled = false },
+		{ "rcarriga/nvim-notify", enabled = false },
+
+		-- themes
+		{ "catppuccin/nvim" },
+		{ "rebelot/kanagawa.nvim" },
+		{ "ellisonleao/gruvbox.nvim" },
+		{ "nyoom-engineering/nyoom.nvim" },
+		{ "AlexvZyl/nordic.nvim" },
 	},
 	defaults = {
 		-- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -44,7 +54,12 @@ require("lazy").setup({
 		version = false, -- always use the latest git commit
 		-- version = "*", -- try installing the latest stable version for plugins that support semver
 	},
-	install = { colorscheme = { "tokyonight", "habamax" } },
+	install = {
+		colorscheme = {
+			"tokyonight",
+			"habamax",
+		},
+	},
 	checker = { enabled = true }, -- automatically check for plugin updates
 	performance = {
 		rtp = {
