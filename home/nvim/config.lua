@@ -23,8 +23,11 @@ require("lazy").setup({
 		},
 		-- Extras
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
+		{ import = "lazyvim.plugins.extras.linting.eslint" },
 		{ import = "lazyvim.plugins.extras.lang.json" },
+		-- { import = "lazyvim.plugins.extras.lang.go" },
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
+		{ import = "lazyvim.plugins.extras.coding.copilot" },
 		-- import/override with your plugins
 		-- { "catppuccin/nvim" },
 		{
@@ -110,6 +113,24 @@ require("lazy").setup({
 				}
 			end,
 		},
+    {
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      build = ":Copilot auth",
+      opts = {
+        suggestion = { 
+          enabled = true,
+          auto_trigger = true,
+        },
+        panel = { enabled = true },
+        filetypes = {
+          markdown = true,
+          help = true,
+        },
+      },
+    },
+
+
 
 		-- themes
 		{ "catppuccin/nvim" },
