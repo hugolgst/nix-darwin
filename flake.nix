@@ -39,7 +39,7 @@
         nixfmt
         nixpkgs-review
 
-        nodejs  
+        nodejs_20
       ];
 
       nixpkgs = {

@@ -27,9 +27,27 @@ require("lazy").setup({
 		{ import = "lazyvim.plugins.extras.lang.json" },
 		-- { import = "lazyvim.plugins.extras.lang.go" },
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
-		{ import = "lazyvim.plugins.extras.coding.copilot" },
+		-- { import = "lazyvim.plugins.extras.coding.copilot" },
 		-- import/override with your plugins
 		-- { "catppuccin/nvim" },
+
+    {
+      "neovim/nvim-lspconfig",
+      opts = {
+        servers = { eslint = {} },
+        setup = {
+          eslint = function()
+            require("lazyvim.util").lsp.on_attach(function(client)
+              if client.name == "eslint" then
+                client.server_capabilities.documentFormattingProvider = true
+              elseif client.name == "tsserver" then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end)
+          end,
+        },
+      },
+    },
 		{
 			"nvim-neo-tree/neo-tree.nvim",
 			opts = {
@@ -113,24 +131,6 @@ require("lazy").setup({
 				}
 			end,
 		},
-    {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      build = ":Copilot auth",
-      opts = {
-        suggestion = { 
-          enabled = true,
-          auto_trigger = true,
-        },
-        panel = { enabled = true },
-        filetypes = {
-          markdown = true,
-          help = true,
-        },
-      },
-    },
-
-
 
 		-- themes
 		{ "catppuccin/nvim" },
@@ -154,7 +154,7 @@ require("lazy").setup({
 			"habamax",
 		},
 	},
-	checker = { enabled = true }, -- automatically check for plugin updates
+	checker = { enabled = true, notify = false }, -- automatically check for plugin updates
 	performance = {
 		rtp = {
 			-- disable some rtp plugins
