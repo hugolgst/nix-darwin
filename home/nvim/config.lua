@@ -32,6 +32,24 @@ require("lazy").setup({
 		-- { "catppuccin/nvim" },
 
     {
+      "kkoomen/vim-doge",
+    },
+    {
+      "nvim-telescope/telescope.nvim",
+      cmd = "Telescope",
+      enabled = true,
+      opts = function()
+        return {
+          defaults = {
+            file_ignore_patterns = { 
+              "node_modules" 
+            }
+          }
+        }
+      end,
+    },
+
+    {
       "neovim/nvim-lspconfig",
       opts = {
         servers = { eslint = {} },
