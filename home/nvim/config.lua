@@ -9,7 +9,7 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 vim.opt.number = true
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 
 require("lazy").setup({
 	spec = {
@@ -23,48 +23,74 @@ require("lazy").setup({
 		},
 		-- Extras
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
-		-- { import = "lazyvim.plugins.extras.linting.eslint" },
+    -- { import = "lazyvim.plugins.extras.linting.eslint" },
 		{ import = "lazyvim.plugins.extras.lang.json" },
-		-- { import = "lazyvim.plugins.extras.lang.go" },
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
+    { import = "lazyvim.plugins.extras.lang.vue" },
+		-- { import = "lazyvim.plugins.extras.lang.go" },
 		-- { import = "lazyvim.plugins.extras.coding.copilot" },
 		-- import/override with your plugins
 		-- { "catppuccin/nvim" },
 
-		{ "ThePrimeagen/vim-be-good" },
+    {
+      "neovim/nvim-lspconfig",
+      -- other settings removed for brevity
+      opts = {
+        ---@type lspconfig.options
+        servers = {
+          eslint = {
+            settings = {
+              -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
+              workingDirectories = { mode = "auto" },
+            },
+          },
+        },
+        setup = {
+          eslint = function()
+            local function get_client(buf)
+              return LazyVim.lsp.get_clients({ name = "eslint", bufnr = buf })[1]
+            end
+    
+            local formatter = LazyVim.lsp.formatter({
+              name = "eslint: lsp",
+              primary = true,
+              priority = 10000,
+              filter = "eslint",
+            })
+    
+            -- Use EslintFixAll on Neovim < 0.10.0
+            if not pcall(require, "vim.lsp._dynamic") then
+              formatter.name = "eslint: EslintFixAll"
+              formatter.sources = function(buf)
+                local client = get_client(buf)
+                return client and { "eslint" } or {}
+              end
+              formatter.format = function(buf)
+                local client = get_client(buf)
+                if client then
+                  local diag = vim.diagnostic.get(buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+                  if #diag > 0 then
+                    vim.cmd("EslintFixAll")
+                  end
+                end
+              end
+            end
+    
+            -- register the formatter with LazyVim
+            LazyVim.format.register(formatter)
+          end,
+        },
+      },
+    },
 
-		{
-			"nvim-telescope/telescope.nvim",
-			cmd = "Telescope",
-			enabled = true,
-			opts = function()
-				return {
-					defaults = {
-						file_ignore_patterns = {
-							"node_modules",
-						},
-					},
-				}
-			end,
-		},
-
-		{
-			"neovim/nvim-lspconfig",
-			opts = {
-				servers = { eslint = {} },
-				setup = {
-					eslint = function()
-						require("lazyvim.util").lsp.on_attach(function(client)
-							if client.name == "eslint" then
-								client.server_capabilities.documentFormattingProvider = true
-							elseif client.name == "tsserver" then
-								client.server_capabilities.documentFormattingProvider = false
-							end
-						end)
-					end,
-				},
-			},
-		},
+    {
+      "williamboman/mason-lspconfig.nvim",
+      opts = {
+        ensure_installed = {
+          "eslint@4.8.0",
+        },
+      },
+    },
 
 		{
 			"nvim-neo-tree/neo-tree.nvim",
@@ -75,13 +101,14 @@ require("lazy").setup({
 			},
 		},
 
-		{ "rcarriga/nvim-notify", enabled = false },
+		-- { "rcarriga/nvim-notify", enabled = false },
 		{
 			"nvim-tree/nvim-web-devicons",
 			opts = {
 				color_icons = false,
 			},
 		},
+
 		{
 			"nvim-lualine/lualine.nvim",
 			opts = function()
