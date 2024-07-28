@@ -23,7 +23,7 @@ require("lazy").setup({
 		},
 		-- Extras
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
-		{ import = "lazyvim.plugins.extras.linting.eslint" },
+		-- { import = "lazyvim.plugins.extras.linting.eslint" },
 		{ import = "lazyvim.plugins.extras.lang.json" },
 		-- { import = "lazyvim.plugins.extras.lang.go" },
 		{ import = "lazyvim.plugins.extras.ui.mini-animate" },
@@ -31,41 +31,41 @@ require("lazy").setup({
 		-- import/override with your plugins
 		-- { "catppuccin/nvim" },
 
-    {
-      "kkoomen/vim-doge",
-    },
-    {
-      "nvim-telescope/telescope.nvim",
-      cmd = "Telescope",
-      enabled = true,
-      opts = function()
-        return {
-          defaults = {
-            file_ignore_patterns = { 
-              "node_modules" 
-            }
-          }
-        }
-      end,
-    },
+		{ "ThePrimeagen/vim-be-good" },
 
-    {
-      "neovim/nvim-lspconfig",
-      opts = {
-        servers = { eslint = {} },
-        setup = {
-          eslint = function()
-            require("lazyvim.util").lsp.on_attach(function(client)
-              if client.name == "eslint" then
-                client.server_capabilities.documentFormattingProvider = true
-              elseif client.name == "tsserver" then
-                client.server_capabilities.documentFormattingProvider = false
-              end
-            end)
-          end,
-        },
-      },
-    },
+		{
+			"nvim-telescope/telescope.nvim",
+			cmd = "Telescope",
+			enabled = true,
+			opts = function()
+				return {
+					defaults = {
+						file_ignore_patterns = {
+							"node_modules",
+						},
+					},
+				}
+			end,
+		},
+
+		{
+			"neovim/nvim-lspconfig",
+			opts = {
+				servers = { eslint = {} },
+				setup = {
+					eslint = function()
+						require("lazyvim.util").lsp.on_attach(function(client)
+							if client.name == "eslint" then
+								client.server_capabilities.documentFormattingProvider = true
+							elseif client.name == "tsserver" then
+								client.server_capabilities.documentFormattingProvider = false
+							end
+						end)
+					end,
+				},
+			},
+		},
+
 		{
 			"nvim-neo-tree/neo-tree.nvim",
 			opts = {
