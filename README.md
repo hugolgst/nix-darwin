@@ -1,4 +1,5 @@
 Install iTerm2: https://iterm2.com/downloads.html
+
 Install NerdFont: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/GeistMono.zip
 
 ```bash
