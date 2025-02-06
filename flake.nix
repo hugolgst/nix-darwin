@@ -26,6 +26,7 @@
           gnupg
           jq
           nerdfonts
+          fzf
 
           # Gadgets
           neofetch
