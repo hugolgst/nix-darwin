@@ -27,6 +27,7 @@
           jq
           nerdfonts
           fzf
+          ripgrep
 
           # Gadgets
           neofetch
