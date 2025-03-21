@@ -11,7 +11,7 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
     let
-      hostname = "Hugos-MacBook-Air";
+      hostname = "Hugos-MacBook-Air-2";
       username = "hugolgst";
       home = "/Users/${username}";
       flakePath = "${home}/.config/nix-darwin";
