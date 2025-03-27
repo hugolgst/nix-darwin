@@ -201,6 +201,7 @@ require("lazy").setup({
 		{ "ellisonleao/gruvbox.nvim" },
 		{ "nyoom-engineering/nyoom.nvim" },
 		{ "AlexvZyl/nordic.nvim" },
+		{ "danymat/neogen", config = true },
 	},
 	defaults = {
 		-- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
