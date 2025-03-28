@@ -196,7 +196,7 @@ require("lazy").setup({
 		},
 
 		{ "echasnovski/mini.hipatterns" },
-		{ "rhysd/conflict-marker.vim" },
+		{ "akinsho/git-conflict.nvim", version = "*", config = true },
 		{
 			"yetone/avante.nvim",
 			event = "VeryLazy",
