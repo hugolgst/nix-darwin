@@ -2,7 +2,8 @@
   imports = [ ./nvim ./fish.nix ];
 
   home = {
-    homeDirectory = "/Users/hugolgst/";
-    stateVersion = "23.11";
+    username = "hugolgst";
+    homeDirectory = builtins.toPath "/Users/hugolgst";
+    stateVersion = "24.11";
   };
 }
