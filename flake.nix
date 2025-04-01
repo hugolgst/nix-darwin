@@ -1,3 +1,6 @@
+# This configuration assumes there will only be one user home
+# See `home.nix`
+
 {
   description = "hugolgst/nix-darwin";
 
@@ -12,9 +15,6 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
     let
       hostname = "Hugos-MacBook-Air-2";
-      username = "hugolgst";
-      home = "/Users/${username}";
-      flakePath = "${home}/.config/nix-darwin";
 
       configuration = { pkgs, lib, ... }: {
         environment.systemPackages = with pkgs; [
@@ -36,7 +36,7 @@
           oh-my-fish
 
           # Nix stuff
-          nixfmt
+          nixfmt-classic
           nixpkgs-review
 
           nodejs_20
@@ -46,21 +46,8 @@
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
         services.nix-daemon.enable = true;
 
-        # users.users."${username}" = {
-        #   shell = pkgs.fish;
-        #   inherit home;
-        # };
-
-        system.activationScripts.postActivation.text = ''
-          # Set the default shell as fish for the user
-          sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
-
-          sourcePath="${flakePath}/config/iterm2.json"
-          destinationPath="${home}/Library/Application Support/iTerm2/DynamicProfiles/iterm2.json"
-          if [ ! -f "$destinationPath" ]; then
-              cp "$sourcePath" "$destinationPath"
-          fi
-        '';
+        programs.fish.enable = true;
+        users.users = (import ./home).user { inherit pkgs; };
 
         # Enable sudo login with Touch ID
         security.pam.enableSudoTouchIdAuth = true;
@@ -80,8 +67,6 @@
         nixpkgs.hostPlatform = "aarch64-darwin";
       };
     in {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
@@ -89,7 +74,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./home;
+            home-manager.users = (import ./home).home-manager;
           }
         ];
       };

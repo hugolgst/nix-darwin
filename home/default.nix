@@ -1,9 +1,24 @@
-{ ... }: {
-  imports = [ ./nvim ./fish.nix ];
+let
+  username = "hugolgst";
+  home = "/Users/${username}";
+in {
+  # System user configuration (for darwin's `users.users`)
+  user = { pkgs, ... }: {
+    ${username} = {
+      name = username;
+      shell = pkgs.fish;
+      inherit home;
+    };
+  };
 
-  home = {
-    username = "hugolgst";
-    homeDirectory = builtins.toPath "/Users/hugolgst";
-    stateVersion = "24.11";
+  # Home Manager configuration
+  home-manager.${username} = { pkgs, ... }: {
+    imports = [ ./nvim ./fish.nix ];
+
+    home = {
+      inherit username;
+      homeDirectory = builtins.toPath home;
+      stateVersion = "24.11";
+    };
   };
 }
