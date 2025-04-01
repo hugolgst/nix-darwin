@@ -14,7 +14,7 @@ in {
   # Home Manager configuration
   home-manager = { nixvim }: {
     ${username} = { pkgs, lib, ... }: {
-      imports = [ ./nvim.nix ./fish.nix nixvim.nixDarwinModules.nixvim ];
+      imports = [ ./nvim.nix ./fish.nix nixvim.homeManagerModules.nixvim ];
       home = {
         inherit username;
         homeDirectory = builtins.toPath home;

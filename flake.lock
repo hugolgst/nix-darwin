@@ -252,25 +252,6 @@
         "type": "github"
       }
     },
-<<<<<<< HEAD
-=======
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1742937945,
-        "narHash": "sha256-lWc+79eZRyvHp/SqMhHTMzZVhpxkRvthsP1Qx6UCq0E=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d02d88f8de5b882ccdde0465d8fa2db3aa1169f7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-24.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
->>>>>>> 7c34172 (WIP)
     "nixvim": {
       "inputs": {
         "devshell": "devshell",
@@ -279,13 +260,9 @@
         "git-hooks": "git-hooks",
         "home-manager": "home-manager_2",
         "nix-darwin": "nix-darwin_2",
-<<<<<<< HEAD
         "nixpkgs": [
           "nixpkgs"
         ],
-=======
-        "nixpkgs": "nixpkgs_2",
->>>>>>> 7c34172 (WIP)
         "nuschtosSearch": "nuschtosSearch",
         "treefmt-nix": "treefmt-nix"
       },

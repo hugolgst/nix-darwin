@@ -72,7 +72,7 @@
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-          home-manager.homeManagerModules.home-manager
+          home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -80,8 +80,6 @@
               (import ./home).home-manager { inherit nixvim; };
           }
         ];
-
-        specialArgs = { inherit nixvim; };
       };
 
       # Expose the package set, including overlays, for convenience.
