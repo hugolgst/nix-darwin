@@ -12,13 +12,14 @@ in {
   };
 
   # Home Manager configuration
-  home-manager.${username} = { pkgs, ... }: {
-    imports = [ ./nvim ./fish.nix ];
-
-    home = {
-      inherit username;
-      homeDirectory = builtins.toPath home;
-      stateVersion = "24.11";
+  home-manager = { nixvim }: {
+    ${username} = { pkgs, lib, ... }: {
+      imports = [ ./nvim.nix ./fish.nix nixvim.nixDarwinModules.nixvim ];
+      home = {
+        inherit username;
+        homeDirectory = builtins.toPath home;
+        stateVersion = "24.11";
+      };
     };
   };
 }

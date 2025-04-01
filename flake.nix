@@ -1,6 +1,3 @@
-# This configuration assumes there will only be one user home
-# See `home.nix`
-
 {
   description = "hugolgst/nix-darwin";
 
@@ -8,11 +5,16 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nixvim }:
     let
       hostname = "Hugos-MacBook-Air-2";
 
@@ -70,13 +72,16 @@
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-          home-manager.darwinModules.home-manager
+          home-manager.homeManagerModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users = (import ./home).home-manager;
+            home-manager.users =
+              (import ./home).home-manager { inherit nixvim; };
           }
         ];
+
+        specialArgs = { inherit nixvim; };
       };
 
       # Expose the package set, including overlays, for convenience.
