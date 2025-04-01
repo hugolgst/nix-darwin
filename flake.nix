@@ -17,8 +17,6 @@
       flakePath = "${home}/.config/nix-darwin";
 
       configuration = { pkgs, lib, ... }: {
-        # List packages installed in system profile. To search by name, run:
-        # $ nix-env -qaP | grep wget
         environment.systemPackages = with pkgs; [
           # Utils
           git
@@ -48,27 +46,11 @@
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
         services.nix-daemon.enable = true;
 
-        # Set fish as default shell
-        programs.fish = {
-          enable = true;
-          shellAliases = {
-            nce = "nvim ${flakePath}/flake.nix";
-            ncu =
-              "nix flake update ${flakePath}; darwin-rebuild switch --flake ${flakePath}";
-            ncp = ''
-              cd ${flakePath}; git add -A; git commit -m "Update nixpkgs to $(jq -r '.nodes.nixpkgs.locked.rev' ${flakePath}/flake.lock)"; git push'';
-            ss = "open -b com.apple.ScreenSaver.Engine";
-            n = "nvim .";
-          };
+        # users.users."${username}" = {
+        #   shell = pkgs.fish;
+        #   inherit home;
+        # };
 
-          loginShellInit = ''
-            pfetch
-          '';
-        };
-        users.users."${username}" = {
-          shell = pkgs.fish;
-          inherit home;
-        };
         system.activationScripts.postActivation.text = ''
           # Set the default shell as fish for the user
           sudo chsh -s ${lib.getBin pkgs.fish}/bin/fish ${username}
@@ -79,6 +61,7 @@
               cp "$sourcePath" "$destinationPath"
           fi
         '';
+
         # Enable sudo login with Touch ID
         security.pam.enableSudoTouchIdAuth = true;
 
@@ -88,7 +71,9 @@
           screensaver.askForPassword = true;
           NSGlobalDomain."com.apple.swipescrolldirection" = false;
         };
+
         system.configurationRevision = self.rev or self.dirtyRev or null;
+
         # Used for backwards compatibility, please read the changelog before changing.
         # $ darwin-rebuild changelog
         system.stateVersion = 4;
