@@ -35,6 +35,7 @@ require("lazy").setup({
 		{
 			"nvim-telescope/telescope.nvim",
 			keys = {
+				{ "<leader>sS", false },
 				{
 					"<leader>ss",
 					"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
