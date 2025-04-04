@@ -33,7 +33,6 @@
           neofetch
           pfetch-rs
 
-          vscode
           iterm2
           oh-my-fish
 

@@ -14,10 +14,21 @@ in {
   # Home Manager configuration
   home-manager = { nixvim }: {
     ${username} = { pkgs, lib, ... }: {
-      imports = [ ./nvim.nix ./fish.nix nixvim.homeManagerModules.nixvim ];
+      imports = [
+        ./modules/iterm2.nix
+        ./nvim
+        ./fish.nix
+        nixvim.homeManagerModules.nixvim
+        ./iterm2.nix
+      ];
+
+      fonts.fontconfig.enable = true;
       home = {
         inherit username;
         homeDirectory = builtins.toPath home;
+
+        packages = [ (import ./geistmono.nix { inherit pkgs; }) ];
+
         stateVersion = "24.11";
       };
     };
