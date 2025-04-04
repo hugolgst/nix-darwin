@@ -22,9 +22,13 @@ in {
         ./iterm2.nix
       ];
 
+      fonts.fontconfig.enable = true;
       home = {
         inherit username;
         homeDirectory = builtins.toPath home;
+
+        packages = [ (import ./geistmono.nix { inherit pkgs; }) ];
+
         stateVersion = "24.11";
       };
     };

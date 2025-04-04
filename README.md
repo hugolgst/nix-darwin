@@ -1,5 +1,3 @@
-Install NerdFont: <https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/GeistMono.zip>
-
 ```bash
 sh <(curl -L https://nixos.org/nix/install)
 ```
