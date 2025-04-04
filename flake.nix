@@ -16,7 +16,7 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nixvim }:
     let
-      hostname = "Hugos-MacBook-Air-2";
+      hostname = "Hugos-MacBook-Air";
 
       configuration = { pkgs, lib, ... }: {
         environment.systemPackages = with pkgs; [

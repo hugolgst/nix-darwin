@@ -16,6 +16,7 @@ in {
     ${username} = { pkgs, lib, ... }: {
       imports = [
         ./modules/iterm2.nix
+        # ./experimental-nvim.nix
         ./nvim
         ./fish.nix
         nixvim.homeManagerModules.nixvim
