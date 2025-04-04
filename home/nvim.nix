@@ -10,6 +10,8 @@
     plugins = {
       ts-autotag.enable = true;
 
+      neotree.enable = true;
+
       treesitter = {
         enable = true;
 
