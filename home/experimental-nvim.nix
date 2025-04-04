@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+
   # Enable NixVim, a Nix-based Neovim configuration system
   programs.nixvim = {
     enable = true;
@@ -116,114 +117,83 @@
 
       # Lualine: Status line plugin for enhanced visual information
       lualine = {
-        enable = true;
-
-        settings = {
-          options = {
-            # Theme configuration for lualine
-            # These settings define colors for different vim modes
-            theme = {
-              normal = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#d183e8"; # Purple background
-                };
-                b = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#303030"; # Dark gray background
-                };
-                c = {
-                  fg = "#c6c6c6";
-                }; # Light gray foreground, transparent background
-              };
-
-              insert = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#80a0ff"; # Blue background for insert mode
-                };
-              };
-
-              visual = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#79dac8"; # Cyan background for visual mode
-                };
-              };
-
-              replace = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#ff5189"; # Pink background for replace mode
-                };
-              };
-
-              inactive = {
-                a = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#080808"; # Almost black background for inactive windows
-                };
-                b = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#080808"; # Almost black background
-                };
-                c = {
-                  fg = "#c6c6c6";
-                }; # Light gray foreground, transparent background
+          enable = true;
+          settings = {
+            options = {
+              theme.__raw = let 
+                blue = "#80a0ff";
+                cyan = "#79dac8";
+                black = "#080808";
+                white = "#c6c6c6";
+                red = "#ff5189";
+                violet = "#d183e8";
+                grey = "#303030";
+              in ''
+                {
+                  normal = {
+                    a = { fg = "${black}", bg = "${violet}" },
+                    b = { fg = "${white}", bg = "${grey}" },
+                    c = { fg = "${white}" },
+                  },
+                  insert = { a = { fg = "${black}", bg = "${blue}" } },
+                  visual = { a = { fg = "${black}", bg = "${cyan}" } },
+                  replace = { a = { fg = "${black}", bg = "${red}" } },
+                  inactive = {
+                    a = { fg = "${white}", bg = "${black}" },
+                    b = { fg = "${white}", bg = "${black}" },
+                    c = { fg = "${white}" },
+                  },
+                }
+              '';
+              component_separators = "";
+              section_separators = {
+                left = "";
+                right = "";
               };
             };
-
-            # Remove default component separators
-            component_separators = {
-              left = "";
-              right = "";
+            sections = {
+              lualine_a = [
+                {
+                  __unkeyed-1 = "mode";
+                  separator = {
+                    left = "";
+                  };
+                  padding = {
+                    right = 2;
+                  };
+                }
+              ];
+              lualine_b = ["filename" "branch"];
+              lualine_c = [
+                {
+                  __unkeyed-1.__raw = "function() return '%=' end";
+                }
+              ];
+              lualine_x = [];
+              lualine_y = ["filetype" "progress"];
+              lualine_z = [
+                {
+                  __unkeyed-1 = "location";
+                  separator = {
+                    right = "";
+                  };
+                  padding = {
+                    left = 2;
+                  };
+                }
+              ];
             };
-
-            # Remove default section separators
-            section_separators = {
-              left = "";
-              right = "";
+            inactive_sections = {
+              lualine_a = ["filename"];
+              lualine_b = [];
+              lualine_c = [];
+              lualine_x = [];
+              lualine_y = [];
+              lualine_z = ["location"];
             };
+            tabline = {};
+            extensions = [];
           };
-
-          # Configure statusline sections
-          sections = {
-            # Left side of the statusline
-            lualine_a = [{
-              __unkeyed-1 =
-                "mode"; # Display current mode (NORMAL, INSERT, etc.)
-              separator = { left = ""; }; # No left separator
-              padding = { right = 2; }; # Add padding on the right
-            }];
-            lualine_b = [ "filename" "branch" ]; # Show filename and git branch
-            lualine_c = [
-              "%=" # Center aligned components placeholder
-            ];
-            lualine_x = [ ]; # Empty section
-            lualine_y =
-              [ "filetype" "progress" ]; # Show filetype and progress percentage
-
-            # Right side of the statusline
-            lualine_z = [{
-              __unkeyed-1 = "location"; # Show cursor position
-              separator = { right = ""; }; # No right separator
-              padding = { left = 2; }; # Add padding on the left
-            }];
-          };
-
-          # Configure inactive window statusline
-          inactive_sections = {
-            lualine_a = [ "filename" ]; # Show only filename
-            lualine_b = [ ];
-            lualine_c = [ ];
-            lualine_x = [ ];
-            lualine_y = [ ];
-            lualine_z = [ "location" ]; # Show cursor position
-          };
-
-          tabline = { }; # No custom tabline
-          extensions = [ ]; # No extensions
-        };
       };
 
       # Treesitter: Advanced syntax highlighting and code navigation
