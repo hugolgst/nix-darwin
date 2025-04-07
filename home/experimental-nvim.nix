@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+
   # Enable NixVim, a Nix-based Neovim configuration system
   programs.nixvim = {
     enable = true;
@@ -114,115 +115,198 @@
         };
       };
 
+      telescope = {
+        enable = true;
+        highlightTheme = "Catppuccin Macchiato";
+        extensions = {
+          fzf-native.enable = true;
+          ui-select = {
+            enable = true;
+            settings = {
+              __unkeyed-1.__raw =
+                ''require("telescope.themes").get_dropdown{}'';
+              specific_opts = { codeactions = true; };
+            };
+          };
+        };
+
+        settings.defaults = {
+          prompt_prefix = "   ";
+          color_devicons = true;
+          set_env.COLORTERM = "truecolor";
+          file_ignore_patterns = [
+            "^.git/"
+            "^.mypy_cache/"
+            "^__pycache__/"
+            "^output/"
+            "^data/"
+            "%.ipynb"
+          ];
+
+          mappings = {
+            i = {
+              # Have Telescope not to enter a normal-like mode when hitting escape (and instead exiting), you can map <Esc> to do so via:
+              "<esc>".__raw = ''
+                function(...)
+                  return require("telescope.actions").close(...)
+                end'';
+              "<c-t>".__raw = ''
+                function(...)
+                  require('trouble.providers.telescope').open_with_trouble(...);
+                end
+              '';
+            };
+            n = {
+              "<c-t>".__raw = ''
+                function(...)
+                  require('trouble.providers.telescope').open_with_trouble(...);
+                end
+              '';
+            };
+          };
+          # trim leading whitespace from grep
+          vimgrep_arguments = [
+            "${pkgs.ripgrep}/bin/rg"
+            "--color=never"
+            "--no-heading"
+            "--with-filename"
+            "--line-number"
+            "--column"
+            "--smart-case"
+            "--trim"
+          ];
+        };
+        keymaps = {
+          "<leader>ft" = {
+            action = "todo-comments";
+            options.desc = "View Todo";
+          };
+          "<leader><space>" = {
+            action = "find_files hidden=true";
+            options.desc = "Find project files";
+          };
+          "<leader>/" = {
+            action = "live_grep";
+            options.desc = "Grep (root dir)";
+          };
+          "<leader>f:" = {
+            action = "command_history";
+            options.desc = "View Command History";
+          };
+          "<leader>fr" = {
+            action = "oldfiles";
+            options.desc = "View Recent files";
+          };
+          "<c-p>" = {
+            mode = [ "n" "i" ];
+            action = "registers";
+            options.desc = "Select register to paste";
+          };
+          "<leader>gc" = {
+            action = "git_commits";
+            options.desc = "commits";
+          };
+          "<leader>fa" = {
+            action = "autocommands";
+            options.desc = "Auto Commands";
+          };
+          "<leader>fc" = {
+            action = "commands";
+            options.desc = "View Commands";
+          };
+          "<leader>fd" = {
+            action = "diagnostics bufnr=0";
+            options.desc = "View Workspace diagnostics";
+          };
+          "<leader>fh" = {
+            action = "help_tags";
+            options.desc = "View Help pages";
+          };
+          "<leader>fk" = {
+            action = "keymaps";
+            options.desc = "View Key maps";
+          };
+          "<leader>fm" = {
+            action = "man_pages";
+            options.desc = "View Man pages";
+          };
+          "<leader>f'" = {
+            action = "marks";
+            options.desc = "View Marks";
+          };
+          "<leader>fo" = {
+            action = "vim_options";
+            options.desc = "View Options";
+          };
+          "<leader>uC" = {
+            action = "colorscheme";
+            options.desc = "Colorscheme preview";
+          };
+        };
+      };
+
       # Lualine: Status line plugin for enhanced visual information
       lualine = {
         enable = true;
-
         settings = {
           options = {
-            # Theme configuration for lualine
-            # These settings define colors for different vim modes
-            theme = {
-              normal = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#d183e8"; # Purple background
-                };
-                b = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#303030"; # Dark gray background
-                };
-                c = {
-                  fg = "#c6c6c6";
-                }; # Light gray foreground, transparent background
-              };
-
-              insert = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#80a0ff"; # Blue background for insert mode
-                };
-              };
-
-              visual = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#79dac8"; # Cyan background for visual mode
-                };
-              };
-
-              replace = {
-                a = {
-                  fg = "#080808"; # Almost black foreground
-                  bg = "#ff5189"; # Pink background for replace mode
-                };
-              };
-
-              inactive = {
-                a = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#080808"; # Almost black background for inactive windows
-                };
-                b = {
-                  fg = "#c6c6c6"; # Light gray foreground
-                  bg = "#080808"; # Almost black background
-                };
-                c = {
-                  fg = "#c6c6c6";
-                }; # Light gray foreground, transparent background
-              };
-            };
-
-            # Remove default component separators
-            component_separators = {
-              left = "";
-              right = "";
-            };
-
-            # Remove default section separators
+            theme.__raw = let
+              blue = "#80a0ff";
+              cyan = "#79dac8";
+              black = "#080808";
+              white = "#c6c6c6";
+              red = "#ff5189";
+              violet = "#d183e8";
+              grey = "#303030";
+            in ''
+              {
+                normal = {
+                  a = { fg = "${black}", bg = "${violet}" },
+                  b = { fg = "${white}", bg = "${grey}" },
+                  c = { fg = "${white}" },
+                },
+                insert = { a = { fg = "${black}", bg = "${blue}" } },
+                visual = { a = { fg = "${black}", bg = "${cyan}" } },
+                replace = { a = { fg = "${black}", bg = "${red}" } },
+                inactive = {
+                  a = { fg = "${white}", bg = "${black}" },
+                  b = { fg = "${white}", bg = "${black}" },
+                  c = { fg = "${white}" },
+                },
+              }
+            '';
+            component_separators = "";
             section_separators = {
-              left = "";
-              right = "";
+              left = "";
+              right = "";
             };
           };
-
-          # Configure statusline sections
           sections = {
-            # Left side of the statusline
             lualine_a = [{
-              __unkeyed-1 =
-                "mode"; # Display current mode (NORMAL, INSERT, etc.)
-              separator = { left = ""; }; # No left separator
-              padding = { right = 2; }; # Add padding on the right
+              __unkeyed-1 = "mode";
+              separator = { left = ""; };
+              padding = { right = 2; };
             }];
-            lualine_b = [ "filename" "branch" ]; # Show filename and git branch
-            lualine_c = [
-              "%=" # Center aligned components placeholder
-            ];
-            lualine_x = [ ]; # Empty section
-            lualine_y =
-              [ "filetype" "progress" ]; # Show filetype and progress percentage
-
-            # Right side of the statusline
+            lualine_b = [ "filename" "branch" ];
+            lualine_c = [{ __unkeyed-1.__raw = "function() return '%=' end"; }];
+            lualine_x = [ ];
+            lualine_y = [ "filetype" "progress" ];
             lualine_z = [{
-              __unkeyed-1 = "location"; # Show cursor position
-              separator = { right = ""; }; # No right separator
-              padding = { left = 2; }; # Add padding on the left
+              __unkeyed-1 = "location";
+              separator = { right = ""; };
+              padding = { left = 2; };
             }];
           };
-
-          # Configure inactive window statusline
           inactive_sections = {
-            lualine_a = [ "filename" ]; # Show only filename
+            lualine_a = [ "filename" ];
             lualine_b = [ ];
             lualine_c = [ ];
             lualine_x = [ ];
             lualine_y = [ ];
-            lualine_z = [ "location" ]; # Show cursor position
+            lualine_z = [ "location" ];
           };
-
-          tabline = { }; # No custom tabline
-          extensions = [ ]; # No extensions
+          tabline = { };
+          extensions = [ ];
         };
       };
 
