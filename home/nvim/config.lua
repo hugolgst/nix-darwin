@@ -129,6 +129,9 @@ require("lazy").setup({
 					position = "right",
 				},
 			},
+			keys = {
+				{ "<leader>E", "<cmd>Neotree current<cr>", desc = "Explorer (current dir)" },
+			},
 		},
 
 		-- { "rcarriga/nvim-notify", enabled = false },
