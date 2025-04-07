@@ -1,6 +1,7 @@
 let
-  username = "hugolgst";
-  home = "/Users/${username}";
+  vars = import ../variables.nix;
+  username = vars.username;
+  home = vars.home;
 in {
   # System user configuration (for darwin's `users.users`)
   user = { pkgs, ... }: {
