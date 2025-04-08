@@ -9,10 +9,20 @@
     userEmail = email;
     userName = fullName;
 
+    diff-highlight.enable = true;
+    maintenance.enable = true;
+
     aliases = {
       pushf = "!echo '$ git fetch origin' && git fetch origin"
         + "&& echo '$ git push --force-with-lease' && git push --force-with-lease";
       staash = "stash --all";
+    };
+
+    extraConfig = {
+      rerere = {
+        enabled = true;
+        autoupdate = true;
+      };
     };
   };
 }
