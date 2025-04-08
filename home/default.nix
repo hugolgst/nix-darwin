@@ -22,6 +22,7 @@ in {
         ./fish.nix
         nixvim.homeManagerModules.nixvim
         ./iterm2.nix
+        ./git.nix
       ];
 
       fonts.fontconfig.enable = true;

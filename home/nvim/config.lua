@@ -134,6 +134,8 @@ require("lazy").setup({
 			},
 		},
 
+		{ "ThePrimeagen/vim-be-good" },
+
 		-- { "rcarriga/nvim-notify", enabled = false },
 		{
 			"nvim-tree/nvim-web-devicons",

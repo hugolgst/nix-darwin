@@ -18,6 +18,18 @@
 
     loginShellInit = ''
       pfetch
+
+      # Disable git push --force
+      function git
+        set args $argv
+        if test "$args[1]" = push; and contains -- "--force" $args || contains -- "--force-with-lease" $args
+          echo "🚫 Warning: force pushes are disabled! Command aborted."
+          echo "Run git pushf instead"
+          return 1
+        else
+          command git $args
+        end
+      end
     '';
 
     plugins = [
