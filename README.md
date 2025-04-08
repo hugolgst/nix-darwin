@@ -1,7 +1,5 @@
 ```bash
-cd ~/.config
-git clone git@github.com:hugolgst/nix-darwin.git && cd nix-darwin
-sh install.sh
+sh -c "$(curl -fsSL https://nix.hugolg.no/entry.sh)"
 ```
 
 [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration with [iTerm2](https://iterm2.com/) and [LazyVim](https://www.lazyvim.org/).
