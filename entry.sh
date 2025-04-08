@@ -14,7 +14,7 @@ CONFIG_DIR="$HOME/.config/nix-darwin"
 # Clone the repo if not already cloned
 if [ ! -d "$CONFIG_DIR" ]; then
   echo -e "${YELLOW}Cloning nix-darwin repo...${NC}"
-  git clone https://github.com/hugolgst/nix-darwin.git "$CONFIG_DIR"
+  git clone git@github.com:hugolgst/nix-darwin.git "$CONFIG_DIR"
 else
   echo -e "${GREEN}✓ nix-darwin repo already cloned${NC}"
 fi
