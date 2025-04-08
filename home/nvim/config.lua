@@ -20,6 +20,17 @@ require("lazy").setup({
 			opts = {
 				colorscheme = "catppuccin-macchiato",
 			},
+			keys = function()
+				local map = vim.keymap.set
+
+				-- Paste without overwriting yank register
+				map("x", "p", '"_dP', { desc = "Paste without yanking" })
+
+				-- Delete without yanking
+				map({ "n", "x" }, "d", '"_d', { desc = "Delete without yanking" })
+				map({ "n", "x" }, "D", '"_D', { desc = "Delete line without yanking" })
+				map({ "n", "x" }, "x", '"_x', { desc = "Delete char without yanking" })
+			end,
 		},
 		-- Extras
 		{ import = "lazyvim.plugins.extras.lang.typescript" },
