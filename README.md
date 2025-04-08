@@ -1,4 +1,6 @@
 ```bash
+cd ~/.config
+git clone git@github.com:hugolgst/nix-darwin.git && cd nix-darwin
 sh install.sh
 ```
 
