@@ -19,6 +19,7 @@
     };
 
     extraConfig = {
+      column.ui = "auto";
       rerere = {
         enabled = true;
         autoupdate = true;
