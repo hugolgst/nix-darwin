@@ -29,7 +29,6 @@ require("lazy").setup({
 				-- Delete without yanking
 				map({ "n", "x" }, "d", '"_d', { desc = "Delete without yanking" })
 				map({ "n", "x" }, "D", '"_D', { desc = "Delete line without yanking" })
-				map({ "n", "x" }, "x", '"_x', { desc = "Delete char without yanking" })
 			end,
 		},
 		-- Extras
