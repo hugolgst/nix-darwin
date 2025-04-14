@@ -2,11 +2,11 @@
   description = "hugolgst/nix-darwin";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixvim = {
       url = "github:nix-community/nixvim/nixos-24.11";
@@ -26,7 +26,6 @@
           coreutils
           gnupg
           jq
-          nerdfonts
           fzf
           ripgrep
 
@@ -46,13 +45,12 @@
 
         nixpkgs = { config = { allowUnfree = true; }; };
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
-        services.nix-daemon.enable = true;
 
         programs.fish.enable = true;
         users.users = (import ./home).user { inherit pkgs; };
 
         # Enable sudo login with Touch ID
-        security.pam.enableSudoTouchIdAuth = true;
+        security.pam.services.sudo_local.touchIdAuth = true;
 
         # MacOS system defaults
         system.defaults = {
