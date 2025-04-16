@@ -2,11 +2,11 @@
   description = "hugolgst/nix-darwin";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixvim = {
       url = "github:nix-community/nixvim/nixos-24.11";
@@ -26,6 +26,7 @@
           coreutils
           gnupg
           jq
+          nerdfonts
           fzf
           ripgrep
 
@@ -45,12 +46,13 @@
 
         nixpkgs = { config = { allowUnfree = true; }; };
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
+        services.nix-daemon.enable = true;
 
         programs.fish.enable = true;
         users.users = (import ./home).user { inherit pkgs; };
 
         # Enable sudo login with Touch ID
-        security.pam.services.sudo_local.touchIdAuth = true;
+        security.pam.enableSudoTouchIdAuth = true;
 
         # MacOS system defaults
         system.defaults = {
@@ -63,7 +65,7 @@
 
         # Used for backwards compatibility, please read the changelog before changing.
         # $ darwin-rebuild changelog
-        system.stateVersion = 5;
+        system.stateVersion = 4;
         nixpkgs.hostPlatform = "aarch64-darwin";
       };
     in {
