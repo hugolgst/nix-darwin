@@ -18,7 +18,7 @@
       };
 
       font = {
-        normal = "GeistMonoNF-Medium 13";
+        normal = "GeistMonoNF-Medium 17";
         nonAscii = "Menlo-Regular 11";
         useNonAsciiFont = false;
         antiAlias = true;
