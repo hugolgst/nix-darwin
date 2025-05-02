@@ -19,9 +19,8 @@
 
       font = {
         normal = "BerkeleyMono-Regular 18";
-        nonAscii =
-          "BerkeleyMonoNerdFontMonoPlusFontAwesomePlusFontAwesomeExtensionPlusOcticonsPlusPowerSymbolsPlusCodiconsPlusPomiconsPlusFontLogosPlusMaterialDesignIconsPlusWeatherIcons-Regular 19";
-        useNonAsciiFont = false;
+        nonAscii = "BerkeleyMonoNFMAAEOPSCPLMDIWEA 19";
+        useNonAsciiFont = true;
         antiAlias = true;
         brightenBold = true;
       };
