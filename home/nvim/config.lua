@@ -1,5 +1,3 @@
--- https://github.com/LazyVim/starter
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
@@ -10,6 +8,77 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- RFC-style text document settings
+vim.api.nvim_create_augroup("RFCTextSettings", { clear = true })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	group = "RFCTextSettings",
+	pattern = "*.txt",
+	callback = function()
+		-- Set line wrapping at 72 characters
+		vim.opt_local.textwidth = 72
+		vim.opt_local.formatoptions:append("t") -- Auto-wrap text
+
+		-- Setting for pagination (66 lines per page)
+		vim.opt_local.colorcolumn = "72" -- Visual indicator for line length
+
+		-- Create a command to insert page breaks
+		vim.api.nvim_buf_create_user_command(0, "RFCPageBreak", function()
+			local line_count = vim.fn.line("$")
+			local pages = math.ceil(line_count / 66)
+			local current_line = 1
+
+			for page = 1, pages do
+				if current_line + 66 <= line_count then
+					vim.fn.append(current_line + 66 - 1, string.rep("-", 72))
+					current_line = current_line + 66
+				end
+			end
+		end, { desc = "Insert RFC-style page breaks every 66 lines" })
+
+		-- Create command to center all-caps lines
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = "RFCTextSettings",
+			buffer = 0,
+			callback = function()
+				-- Save cursor position
+				local cursor_pos = vim.fn.getcurpos()
+
+				-- Find and center all-caps lines that are >72 characters
+				vim.cmd([[
+          silent! %s/^\([A-Z][A-Z0-9 :.,-_]\{72,\}\)$/\=printf('%*s', (72 + len(submatch(1))) / 2, submatch(1))/ge
+        ]])
+
+				-- Restore cursor position
+				vim.fn.setpos(".", cursor_pos)
+			end,
+		})
+
+		-- Key mapping for inserting page breaks
+		vim.keymap.set("n", "<leader>rp", ":RFCPageBreak<CR>", { buffer = true, desc = "Insert RFC page breaks" })
+
+		-- Key mapping for adding dots to column 72
+		vim.keymap.set("n", "<leader>rd", function()
+			-- Get current line number
+			local line_num = vim.fn.line(".")
+			-- Get current line content
+			local line_content = vim.fn.getline(".")
+			-- Calculate how many dots needed
+			local current_length = vim.fn.strdisplaywidth(line_content)
+			if current_length >= 72 then
+				-- Line already at or beyond 72 chars, do nothing
+				return
+			end
+			-- Create string of dots to fill to column 72
+			local dots = string.rep(".", 72 - current_length)
+			-- Append dots to the current line
+			vim.fn.setline(line_num, line_content .. dots)
+		end, { buffer = true, desc = "Fill line with dots to column 72" })
+
+		-- Status message
+		vim.api.nvim_echo({ { "RFC-style text document settings applied", "Normal" } }, false, {})
+	end,
+})
 
 require("lazy").setup({
 	spec = {
@@ -194,10 +263,10 @@ require("lazy").setup({
 					options = {
 						theme = bubbles_theme,
 						component_separators = "",
-						section_separators = { left = "", right = "" },
+						section_separators = { left = "", right = "" },
 					},
 					sections = {
-						lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
+						lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
 						lualine_b = { "filename", "branch" },
 						lualine_c = {
 							"%=", --[[ add your center compoentnts here in place of this comment ]]
@@ -205,7 +274,7 @@ require("lazy").setup({
 						lualine_x = {},
 						lualine_y = { "filetype", "progress" },
 						lualine_z = {
-							{ "location", separator = { right = "" }, left_padding = 2 },
+							{ "location", separator = { right = "" }, left_padding = 2 },
 						},
 					},
 					inactive_sections = {
