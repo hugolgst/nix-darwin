@@ -30,9 +30,10 @@ in {
         inherit username;
         homeDirectory = builtins.toPath home;
 
-        packages = with pkgs;
-          [ yabai sketchybar ]
-          ++ [ (import ./geistmono.nix { inherit pkgs; }) ];
+        # packages = with pkgs;
+        #   [ yabai sketchybar ]
+        #   ++ [ (import ./geistmono.nix { inherit pkgs; }) ];
+        packages = [ (import ./geistmono.nix { inherit pkgs; }) ];
 
         stateVersion = "24.11";
       };
