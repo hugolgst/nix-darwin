@@ -1,5 +1,5 @@
 {
-  hostname = "Hugos-MacBook-Air-2";
+  hostname = "Hugos-MacBook-Air";
   username = "hugolgst";
   home = "/Users/hugolgst";
   fullName = "Hugo Lageneste";
