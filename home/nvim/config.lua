@@ -57,6 +57,8 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 		-- Key mapping for inserting page breaks
 		vim.keymap.set("n", "<leader>rp", ":RFCPageBreak<CR>", { buffer = true, desc = "Insert RFC page breaks" })
 
+		vim.keymap.set("n", "<leader>rc", ":center 72<CR>", { buffer = true, desc = "Center line with width 72" })
+
 		-- Key mapping for adding dots to column 72
 		vim.keymap.set("n", "<leader>rd", function()
 			-- Get current line number
