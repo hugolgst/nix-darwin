@@ -335,6 +335,7 @@ let
       "Non Ascii Font" = profile.font.nonAscii;
       "Use Non-ASCII Font" = if profile.font.useNonAsciiFont then 1 else 0;
       "ASCII Anti Aliased" = if profile.font.antiAlias then 1 else 0;
+      "Non-ASCII Anti Aliased" = if profile.font.antiAlias then 1 else 0;
       "Brighten Bold Text" = if profile.font.brightenBold then 1 else 0;
       "Background Color" = hexToITermColor profile.colors.background;
       "Foreground Color" = hexToITermColor profile.colors.foreground;

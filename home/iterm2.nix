@@ -18,9 +18,9 @@
       };
 
       font = {
-        normal = "GeistMonoNF-Medium 17";
-        nonAscii = "Menlo-Regular 11";
-        useNonAsciiFont = false;
+        normal = "BerkeleyMono-Regular 18";
+        nonAscii = "BerkeleyMonoNFMAAEOPSCPLMDIWEA 19";
+        useNonAsciiFont = true;
         antiAlias = true;
         brightenBold = true;
       };
